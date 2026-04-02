@@ -31,7 +31,7 @@ app.get('/', (req, res) => {
 app.use('/api/todos', todosRouter)
 
 // Démarrage
-app.listen(PORT, () => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log('')
   console.log('🚀 ====================================')
   console.log(`✅ Serveur démarré sur http://localhost:${PORT}`)
