@@ -1,21 +1,18 @@
-// database.js - Configuration de la connexion PostgreSQL
+// database.js - Configuration PostgreSQL pour production
 
 import pg from 'pg'
 const { Pool } = pg
 
-// Pool = groupe de connexions réutilisables (plus efficace)
+// Utilise DATABASE_URL en production, sinon config locale
 const pool = new Pool({
-  host: 'localhost',      // Serveur PostgreSQL
-  port: 5432,             // Port par défaut
-  database: 'todo_db',    // Nom de notre base
-  user: process.env.USER, // Ton nom d'utilisateur macOS
-  password: '',           // Pas de mot de passe en local
+  connectionString: process.env.DATABASE_URL,
+  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 })
 
-// Test de connexion au démarrage
+// Test de connexion
 pool.query('SELECT NOW()', (err, res) => {
   if (err) {
-    console.error('❌ Erreur de connexion à PostgreSQL:', err.message)
+    console.error('❌ Erreur PostgreSQL:', err.message)
   } else {
     console.log('✅ Connecté à PostgreSQL:', res.rows[0].now)
   }
